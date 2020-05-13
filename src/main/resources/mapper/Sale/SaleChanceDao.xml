@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SystemManage.SaleChance.dao.SaleChanceDao">
+
+    <resultMap type="SystemManage.SaleChance.entity.SaleChance" id="SaleChanceResult">
+        <result property="id" column="id"/>
+        <result property="chanceSource" column="chanceSource"/>
+        <result property="cgjl" column="cgjl"/>
+        <result property="overView" column="overView"/>
+        <result property="linkMan" column="linkMan"/>
+        <result property="linkPhone" column="linkPhone"/>
+        <result property="description" column="description"/>
+        <result property="createMan" column="createMan"/>
+        <result property="createTime" column="createTime"/>
+        <result property="assignMan" column="assignMan"/>
+        <result property="assignTime" column="assignTime"/>
+        <result property="state" column="state"/>
+        <result property="devResult" column="devResult"/>
+    </resultMap>
+
+    <select id="findSaleChance" parameterType="SystemManage.SaleChance.entity.SaleChance" resultMap="SaleChanceResult">
+        select * from sale_chance
+        <where>
+            <if test="customerName!=null and customerName!='' ">
+                customerName like #{customerName}
+            </if>
+            <if test="overView!=null and overView!='' ">
+                and overView like #{overView}
+            </if>
+            <if test="createMan!=null and createMan!='' ">
+                and createMan like #{createMan}
+            </if>
+            <if test="state!=null and state!=' ' ">
+                and state = #{state}
+            </if>
+            <if test="devResult!=null and devResult!=' ' ">
+                and devResult = #{devResult}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTotalSaleChance" parameterType="Map" resultType="Long">
+        select count(*) from sale_chance
+        <where>
+            <if test="customerName!=null and customerName!='' ">
+                customerName like #{customerName}
+            </if>
+            <if test="overView!=null and overView!='' ">
+                and overView like #{overView}
+            </if>
+            <if test="createMan!=null and createMan!='' ">
+                and createMan like #{createMan}
+            </if>
+            <if test="state!=null and state!=' ' ">
+                and state = #{state}
+            </if>
+            <if test="devResult!=null and devResult!=' ' ">
+                and devResult = #{devResult}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addSaleChance" parameterType="SystemManage.SaleChance.entity.SaleChance">
+		insert into sale_chance values(null,#{chanceSource},#{customerName},#{cgjl},#{overView},#{linkMan},#{linkPhone},#{description},#{createMan},#{createTime},#{assignMan},#{assignTime},#{state},#{devResult})
+	</insert>
+
+    <update id="updateSaleChance" parameterType="SystemManage.SaleChance.entity.SaleChance">
+		update sale_chance set chanceSource=#{chanceSource},customerName=#{customerName},cgjl=#{cgjl},
+								 overView=#{overView},linkMan=#{linkMan},linkPhone=#{linkPhone},description=#{description},
+								 createMan=#{createMan},createTime=#{createTime},assignMan=#{assignMan},assignTime=#{assignTime},state=#{state} where id=#{id}
+	</update>
+
+    <update id="updateSaleChanceDevResult" parameterType="Map">
+		update sale_chance set devResult=#{devResult} where id=#{id}
+	</update>
+
+    <delete id="deleteSaleChance" parameterType="Integer">
+		delete from sale_chance where id=#{id}
+	</delete>
+
+    <select id="findById" parameterType="Integer" resultMap="SaleChanceResult">
+		select * from sale_chance where id=#{id}
+	</select>
+</mapper> 

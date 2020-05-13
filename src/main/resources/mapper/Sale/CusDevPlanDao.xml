@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SystemManage.SaleChance.dao.CusDevPlanDao">
+
+	<resultMap type="SystemManage.SaleChance.entity.CusDevPlan" id="CusDevPlanResult">
+		<result property="id" column="id"/>
+		<result property="planItem" column="planItem"/>
+		<result property="planDate" column="planDate" />
+		<result property="exeAffect" column="exeAffect"/>
+		<association property="saleChance" column="saleChanceId" select="SystemManage.SaleChance.dao.SaleChanceDao.findById"></association>
+	</resultMap>
+
+	<select id="findCusDevPlan" parameterType="Map" resultMap="CusDevPlanResult">
+		select * from cus_dev_plan
+		<where>
+			<if test="saleChanceId!=null and saleChanceId!=' ' ">
+				and saleChanceId = #{saleChanceId}
+			</if>
+			<if test="customerName!=null and customerName!=' ' ">
+				and customerName = #{customerName}
+			</if>
+			<if test="overView!=null and overView!=' ' ">
+				and overView = #{overView}
+			</if>
+			<if test="devResult!=null and devResult!=' ' ">
+				and devResult = #{devResult}
+			</if>
+		</where>
+	</select>
+
+	<select id="getTotalCusDevPlan" parameterType="Map" resultType="Long">
+		select count(*) from cus_dev_plan
+	</select>
+
+	<insert id="addCusDevPlan" parameterType="SystemManage.SaleChance.entity.CusDevPlan">
+		insert into cus_dev_plan values(null,#{saleChance.id},#{planItem},#{planDate},#{exeAffect})
+	</insert>
+
+	<update id="updateCusDevPlan" parameterType="SystemManage.SaleChance.entity.CusDevPlan">
+		update cus_dev_plan set planItem=#{planItem},planDate=#{planDate},exeAffect=#{exeAffect} where id=#{id}
+	</update>
+
+	<delete id="deleteCusDevPlan" parameterType="Integer">
+		delete from cus_dev_plan where id=#{id}
+	</delete>
+
+	<select id="findById" parameterType="Integer" resultMap="CusDevPlanResult">
+		select * from cus_dev_plan where id=#{id}
+	</select>
+
+</mapper> 
